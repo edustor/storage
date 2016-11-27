@@ -1,0 +1,6 @@
+package ru.edustor.recognition
+
+import org.springframework.boot.autoconfigure.SpringBootApplication
+
+@SpringBootApplication
+open class EdustorUploadApplication
