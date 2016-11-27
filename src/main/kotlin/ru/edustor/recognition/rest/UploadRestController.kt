@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import ru.edustor.proto.EdustorPdfProcessingProtos.PdfUploadedEvent
 import ru.edustor.recognition.exception.InvalidContentTypeException
 import ru.edustor.recognition.service.FileStorageService
+import java.time.Instant
 import java.util.*
 
 @RestController
@@ -22,5 +24,13 @@ class UploadRestController(val storage: FileStorageService, val rabbitTemplate: 
 
         val uuid = UUID.randomUUID().toString()
         storage.putPdf(uuid, file.inputStream, file.size)
+
+        val uploadedEvent = PdfUploadedEvent.newBuilder()
+                .setUuid(uuid)
+                .setTimestamp(Instant.now().epochSecond)
+                .setUserId("")
+                .build()
+
+        rabbitTemplate.convertAndSend("internal.edustor.ru", "uploaded.pdf.event", uploadedEvent.toByteArray())
     }
 }
