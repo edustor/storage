@@ -17,7 +17,7 @@ import java.util.*
 @RequestMapping("api/v1/upload")
 class UploadRestController(val storage: FileStorageService, val rabbitTemplate: RabbitTemplate) {
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    fun handlePdfUpload(@RequestParam("file") file: MultipartFile) {
+    fun handlePdfUpload(@RequestParam("file") file: MultipartFile): EdustorUploadApiProtos.UploadResult? {
 
         if (file.contentType != "application/pdf") {
             throw InvalidContentTypeException("This url is accepts only application/pdf documents")
@@ -38,6 +38,6 @@ class UploadRestController(val storage: FileStorageService, val rabbitTemplate: 
                 .setUuid(uuid)
                 .build()
 
-//        return result
+        return result
     }
 }
