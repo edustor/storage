@@ -1,4 +1,4 @@
-package ru.edustor.recognition.rest
+package ru.edustor.upload.rest
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.web.bind.annotation.RequestMapping
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import ru.edustor.commons.protobuf.proto.EdustorUploadApiProtos.UploadResult
 import ru.edustor.commons.protobuf.proto.internal.EdustorPdfProcessingProtos.PdfUploadedEvent
-import ru.edustor.recognition.exception.InvalidContentTypeException
-import ru.edustor.recognition.service.FileStorageService
+import ru.edustor.upload.exception.InvalidContentTypeException
+import ru.edustor.upload.service.FileStorageService
 import java.time.Instant
 import java.util.*
 

@@ -1,4 +1,4 @@
-package ru.edustor.recognition.config
+package ru.edustor.upload.config
 
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.Queue
