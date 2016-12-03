@@ -38,9 +38,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
-    compile 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'
 
-    compile 'ru.edustor.commons:protobuf:f3c6ae1e4b'
+    compile 'ru.edustor.commons:protobuf:adfbffa'
     
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M3"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M3"
