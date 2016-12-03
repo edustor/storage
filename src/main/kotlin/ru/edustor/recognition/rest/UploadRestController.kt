@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import ru.edustor.proto.EdustorPdfProcessingProtos.PdfUploadedEvent
+import ru.edustor.proto.EdustorUploadApiProtos
+import ru.edustor.proto.internal.EdustorPdfProcessingProtos.PdfUploadedEvent
 import ru.edustor.recognition.exception.InvalidContentTypeException
 import ru.edustor.recognition.service.FileStorageService
 import java.time.Instant
@@ -31,6 +32,12 @@ class UploadRestController(val storage: FileStorageService, val rabbitTemplate: 
                 .setUserId("")
                 .build()
 
-        rabbitTemplate.convertAndSend("internal.edustor.ru", "uploaded.pdf.event", uploadedEvent.toByteArray())
+        rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent.toByteArray())
+
+        val result = EdustorUploadApiProtos.UploadResult.newBuilder()
+                .setUuid(uuid)
+                .build()
+
+//        return result
     }
 }
