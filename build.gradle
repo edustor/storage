@@ -4,6 +4,7 @@ version '0.5'
 buildscript {
     ext.kotlin_version = '1.0.5-2'
     ext.spring_boot_version = '1.4.1.RELEASE'
+    ext.edustor_commons_version = '893da56'
 
     repositories {
         mavenCentral()
@@ -29,7 +30,6 @@ configurations {
     all*.exclude group: "log4j"
 }
 
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'io.minio:minio:2.0.4'
@@ -39,10 +39,9 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
 
-    compile 'ru.edustor.commons:protobuf:3e80753'
-    compile 'ru.edustor.commons:storage:3e80753'
-
-    compile 'io.jsonwebtoken:jjwt:0.7.0'
+    compile "ru.edustor.commons:protobuf:$edustor_commons_version"
+    compile "ru.edustor.commons:storage:$edustor_commons_version"
+    compile "ru.edustor.commons:auth:$edustor_commons_version"
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M3"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M3"
