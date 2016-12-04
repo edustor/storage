@@ -39,8 +39,10 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
 
-    compile 'ru.edustor.commons:protobuf:e6abdc6'
-    compile 'ru.edustor.commons:storage:e6abdc6'
+    compile 'ru.edustor.commons:protobuf:3e80753'
+    compile 'ru.edustor.commons:storage:3e80753'
+
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M3"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M3"
