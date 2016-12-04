@@ -1,5 +1,7 @@
 package ru.edustor.upload.rest
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -16,6 +18,8 @@ import java.util.*
 @RestController
 @RequestMapping("api/v1/upload")
 class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTemplate: RabbitTemplate) {
+    val logger: Logger = LoggerFactory.getLogger(UploadRestController::class.java)
+
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile, account: EdustorAccount): UploadResult? {
 
@@ -35,6 +39,8 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
                 .build()
 
         rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent.toByteArray())
+
+        logger.info("PDF $uuid uploaded by ${account.uuid}")
 
         val result = UploadResult.newBuilder()
                 .setUuid(uuid)
