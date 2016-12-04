@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import ru.edustor.commons.protobuf.proto.EdustorUploadApiProtos.UploadResult
 import ru.edustor.commons.protobuf.proto.internal.EdustorPdfProcessingProtos.PdfUploadedEvent
+import ru.edustor.commons.storage.service.BinaryObjectStorageService
+import ru.edustor.commons.storage.service.BinaryObjectStorageService.ObjectType
 import ru.edustor.upload.exception.InvalidContentTypeException
-import ru.edustor.upload.service.FileStorageService
 import java.time.Instant
 import java.util.*
 
 @RestController
 @RequestMapping("api/v1/upload")
-class UploadRestController(val storage: FileStorageService, val rabbitTemplate: RabbitTemplate) {
+class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTemplate: RabbitTemplate) {
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile): UploadResult? {
 
@@ -24,7 +25,7 @@ class UploadRestController(val storage: FileStorageService, val rabbitTemplate: 
         }
 
         val uuid = UUID.randomUUID().toString()
-        storage.putPdf(uuid, file.inputStream, file.size)
+        storage.put(ObjectType.PDF_UPLOAD, uuid, file.inputStream, file.size)
 
         val uploadedEvent = PdfUploadedEvent.newBuilder()
                 .setUuid(uuid)
