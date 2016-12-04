@@ -1,12 +1,10 @@
 package ru.edustor.upload.rest
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import ru.edustor.commons.protobuf.proto.EdustorUploadApiProtos.UploadResult
+import ru.edustor.commons.protobuf.proto.internal.EdustorAccountsProtos.EdustorAccount
 import ru.edustor.commons.protobuf.proto.internal.EdustorPdfProcessingProtos.PdfUploadedEvent
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
 import ru.edustor.commons.storage.service.BinaryObjectStorageService.ObjectType
@@ -18,7 +16,7 @@ import java.util.*
 @RequestMapping("api/v1/upload")
 class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTemplate: RabbitTemplate) {
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    fun handlePdfUpload(@RequestParam("file") file: MultipartFile): UploadResult? {
+    fun handlePdfUpload(@RequestParam("file") file: MultipartFile, account: EdustorAccount): UploadResult? {
 
         if (file.contentType != "application/pdf") {
             throw InvalidContentTypeException("This url is accepts only application/pdf documents")
