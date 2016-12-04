@@ -31,7 +31,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
         val uploadedEvent = PdfUploadedEvent.newBuilder()
                 .setUuid(uuid)
                 .setTimestamp(Instant.now().epochSecond)
-                .setUserId("")
+                .setUserId(account.uuid)
                 .build()
 
         rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent.toByteArray())
