@@ -21,7 +21,9 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
     val logger: Logger = LoggerFactory.getLogger(UploadRestController::class.java)
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    fun handlePdfUpload(@RequestParam("file") file: MultipartFile, account: EdustorAccount): UploadResult? {
+    fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
+                        @RequestParam("targetLesson", required = false) targetLessonId: String?,
+                        account: EdustorAccount): UploadResult? {
 
         account.assertScopeContains("upload")
 
@@ -36,6 +38,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
                 .setUuid(uuid)
                 .setTimestamp(Instant.now().epochSecond)
                 .setUserId(account.uuid)
+                .setTargetLessonId(targetLessonId)
                 .build()
 
         rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent.toByteArray())
