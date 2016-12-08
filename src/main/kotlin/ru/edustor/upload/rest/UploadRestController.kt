@@ -3,7 +3,10 @@ package ru.edustor.upload.rest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import ru.edustor.commons.auth.assertScopeContains
 import ru.edustor.commons.protobuf.proto.EdustorUploadApiProtos.UploadResult
@@ -22,7 +25,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
-                        @RequestParam("targetLesson", required = false) targetLessonId: String?,
+                        @RequestParam("targetLesson", required = false, defaultValue = "") targetLessonId: String, // "" is protobuf default
                         account: EdustorAccount): UploadResult? {
 
         account.assertScopeContains("upload")
