@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import ru.edustor.commons.auth.assertScopeContains
-import ru.edustor.commons.protobuf.proto.EdustorUploadApiProtos.UploadResult
-import ru.edustor.commons.protobuf.proto.internal.EdustorAccountsProtos.EdustorAccount
-import ru.edustor.commons.protobuf.proto.internal.EdustorPdfProcessingProtos.PdfUploadedEvent
+import ru.edustor.commons.models.internal.accounts.EdustorAccount
+import ru.edustor.commons.models.internal.processing.pdf.PdfUploadedEvent
+import ru.edustor.commons.models.upload.UploadResult
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
 import ru.edustor.commons.storage.service.BinaryObjectStorageService.ObjectType
 import ru.edustor.upload.exception.InvalidContentTypeException
@@ -25,7 +25,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
-                        @RequestParam("targetLesson", required = false, defaultValue = "") targetLessonId: String, // "" is protobuf default
+                        @RequestParam("targetLesson", required = false) targetLessonId: String?,
                         account: EdustorAccount): UploadResult? {
 
         account.assertScopeContains("upload")
@@ -37,20 +37,13 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
         val uuid = UUID.randomUUID().toString()
         storage.put(ObjectType.PDF_UPLOAD, uuid, file.inputStream, file.size)
 
-        val uploadedEvent = PdfUploadedEvent.newBuilder()
-                .setUuid(uuid)
-                .setTimestamp(Instant.now().epochSecond)
-                .setUserId(account.uuid)
-                .setTargetLessonId(targetLessonId)
-                .build()
+        val uploadedEvent = PdfUploadedEvent(uuid, account.uuid, Instant.now(), targetLessonId)
 
-        rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent.toByteArray())
+        rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent)
 
         logger.info("PDF $uuid uploaded by ${account.uuid}")
 
-        val result = UploadResult.newBuilder()
-                .setUuid(uuid)
-                .build()
+        val result = UploadResult(uuid)
 
         return result
     }
