@@ -38,11 +38,15 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    compile 'org.postgresql:postgresql:9.4.1211'
 
     compile "ru.edustor.commons:storage:$edustor_commons_version"
     compile "ru.edustor.commons:auth:$edustor_commons_version"
     compile "ru.edustor.commons:rabbit:$edustor_commons_version"
     compile "ru.edustor.commons:models:$edustor_commons_version"
+
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M3"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M3"
