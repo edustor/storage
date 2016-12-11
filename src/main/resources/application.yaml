@@ -1,2 +1,7 @@
 server:
   port: 8083
+spring:
+  http:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
