@@ -50,7 +50,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
 
     @RequestMapping("pages/url", method = arrayOf(RequestMethod.POST))
     fun handleUrlPdfUpload(@RequestParam url: String,
-                           @RequestParam("target_lesson", required = false) targetLessonId: String?,
+                           @RequestParam("target", required = false) targetLessonId: String?,
                            @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
                            account: EdustorAccount): UploadResult {
         val uploaderId = if (requestedUploaderId != null) {
