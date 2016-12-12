@@ -33,7 +33,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
                         @RequestParam("target_lesson", required = false) targetLessonId: String?,
                         account: EdustorAccount): UploadResult? {
 
-        account.assertScopeContains("upload2", "offline2")
+        account.assertScopeContains("upload")
 
         if (file.contentType != "application/pdf") {
             throw InvalidContentTypeException("This url is accepts only application/pdf documents")
