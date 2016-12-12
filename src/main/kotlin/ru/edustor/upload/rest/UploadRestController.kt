@@ -65,10 +65,6 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
         val resp = httpClient.newCall(req).execute()
 
         resp.body().use {
-            if (resp.body().contentType().toString() != "application/pdf") {
-                throw InvalidContentTypeException("This url is accepts only application/pdf documents")
-            }
-
             val contentLength = resp.body().contentLength()
             if (contentLength > 100 * 1024 * 1024) {
                 throw MaxFileSizeViolationException()
