@@ -15,6 +15,7 @@ import ru.edustor.commons.models.upload.UploadResult
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
 import ru.edustor.commons.storage.service.BinaryObjectStorageService.ObjectType
 import ru.edustor.upload.exception.InvalidContentTypeException
+import java.io.InputStream
 import java.time.Instant
 import java.util.*
 
@@ -25,7 +26,7 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
-                        @RequestParam("targetLesson", required = false) targetLessonId: String?,
+                        @RequestParam("target_lesson", required = false) targetLessonId: String?,
                         account: EdustorAccount): UploadResult? {
 
         account.assertScopeContains("upload")
@@ -34,17 +35,33 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
             throw InvalidContentTypeException("This url is accepts only application/pdf documents")
         }
 
-        val uuid = UUID.randomUUID().toString()
-        storage.put(ObjectType.PDF_UPLOAD, uuid, file.inputStream, file.size)
+        val uploadUuid = processFile(account.uuid, file.inputStream, file.size)
 
-        val uploadedEvent = PdfUploadedEvent(uuid, account.uuid, Instant.now(), targetLessonId)
-
+        val uploadedEvent = PdfUploadedEvent(uploadUuid, account.uuid, Instant.now(), targetLessonId)
         rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent)
 
-        logger.info("PDF $uuid uploaded by ${account.uuid}")
-
-        val result = UploadResult(uuid)
-
+        val result = UploadResult(uploadUuid)
         return result
+    }
+
+    @RequestMapping
+    fun handleUrlPdfUpload(@RequestParam url: String,
+                           @RequestParam("target_lesson", required = false) targetLessonId: String?,
+                           @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
+                           account: EdustorAccount) {
+        val uploaderId = if (requestedUploaderId != null) {
+            account.assertScopeContains("internal")
+            requestedUploaderId
+        } else {
+            account.assertScopeContains("upload")
+            account.uuid
+        }
+    }
+
+    private fun processFile(uploaderId: String, file: InputStream, fileSize: Long): String {
+        val uuid = UUID.randomUUID().toString()
+        storage.put(ObjectType.PDF_UPLOAD, uuid, file, fileSize)
+        logger.info("PDF $uuid uploaded by $uploaderId")
+        return uuid
     }
 }
