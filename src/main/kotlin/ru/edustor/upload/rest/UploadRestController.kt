@@ -77,6 +77,10 @@ class UploadRestController(val storage: BinaryObjectStorageService, val rabbitTe
             }
 
             val uploadUuid = processFile(uploaderId, resp.body().byteStream(), contentLength)
+
+            val uploadedEvent = PdfUploadedEvent(uploadUuid, account.uuid, Instant.now(), targetLessonId)
+            rabbitTemplate.convertAndSend("internal.edustor", "uploaded.pdf.pages.processing", uploadedEvent)
+
             val result = UploadResult(uploadUuid)
             return result
         }
