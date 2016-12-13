@@ -1,2 +1,7 @@
 server:
   port: 8083
+edustor:
+  storage:
+    url: https://s3.wutiarn.ru
+    access-key: WCUNNGSKMRU61L1I2CXF
+    secret-key: OFauQUc7MDP2Ro9X7AORxC1eGEj6UasAOoR8XPb3
