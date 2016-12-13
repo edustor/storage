@@ -1,7 +1,7 @@
 package ru.edustor.upload.rest
 
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -17,7 +17,7 @@ import ru.edustor.upload.service.PagesUploadService
 @RestController
 @RequestMapping("api/v1/upload")
 class UploadRestController(val uploadService: PagesUploadService) {
-    val httpClient = OkHttpClient()
+    val httpClient: OkHttpClient = OkHttpClient()
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
