@@ -4,9 +4,9 @@ spring:
       max-file-size: 100Mb
       max-request-size: 100Mb
   datasource:
-      url: jdbc:postgresql://postgres.edustor.svc.cluster.local:5432/edustor_upload
-      username: postgres
+    url: jdbc:postgresql://localhost:5432/edustor_upload
+    username: postgres
   jpa:
-      hibernate:
-        ddl-auto: update
-      generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
