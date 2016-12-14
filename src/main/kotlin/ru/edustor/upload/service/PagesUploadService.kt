@@ -24,7 +24,7 @@ class PagesUploadService(val storage: BinaryObjectStorageService,
         logger.info("Processing file $uploadUuid uploaded by $uploaderId")
 
         val targetLessonId = requestedTarget ?: let {
-            val account = accountRepository.getOne(uploaderId)
+            val account = accountRepository.findOne(uploaderId)
             val nuTarget = account?.nextUploadTarget ?: return@let null
             account.nextUploadTarget = null
             accountRepository.save(account)
