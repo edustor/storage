@@ -13,7 +13,7 @@ class NextUploadRestController(val accountRepository: AccountRepository) {
     @RequestMapping("nu", method = arrayOf(RequestMethod.POST))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun handlePdfUpload(@RequestParam("user_id") userId: String,
-                        @RequestParam("target") targetLessonId: String,
+                        @RequestParam("target", required = false) targetLessonId: String?,
                         account: EdustorAccount) {
         account.assertScopeContains("internal")
 
