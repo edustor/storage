@@ -54,7 +54,7 @@ deployment:
         -e DOCKER_HOST=swarm.edustor.ru:2376
         -e DOCKER_TLS_VERIFY=1
         -e CA_URL=https://wutiarn.keybase.pub/swarm/ca.pem
-        -e CA_CERT=https://wutiarn.keybase.pub/swarm/cert.pem
+        -e CERT_URL=https://wutiarn.keybase.pub/swarm/cert.pem
         -e KEY="$DOCKER_KEY"
         quay.io/wutiarn/docker-deployer
         docker service update --image quay.io/edustor/upload:ci-$CIRCLE_BUILD_NUM edustor_upload
