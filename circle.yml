@@ -55,7 +55,7 @@ deployment:
         -e DOCKER_TLS_VERIFY=1
         -e CA_URL=https://wutiarn.keybase.pub/swarm/ca.pem
         -e CERT_URL=https://wutiarn.keybase.pub/swarm/cert.pem
-        -e KEY="$(echo $DOCKER_KEY | base64 -d)"
+        -e KEY="$DOCKER_KEY"
         quay.io/wutiarn/docker-deployer
         docker service update --image quay.io/edustor/upload:ci-$CIRCLE_BUILD_NUM edustor_upload
 # REQUIRED ENVIRONMENTS
