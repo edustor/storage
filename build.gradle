@@ -28,7 +28,7 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'spring-boot'
 
 group 'ru.edustor'
-version '0.8-m2'
+version '0.8-m3'
 
 repositories {
     mavenCentral()
@@ -75,7 +75,9 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    compile 'org.postgresql:postgresql:9.4.1211'
 
     compile "ru.edustor.commons:storage:$edustor_commons_version"
     compile "ru.edustor.commons:auth:$edustor_commons_version"
