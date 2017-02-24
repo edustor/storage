@@ -1,12 +1,12 @@
 package ru.edustor.upload.repository
 
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 import ru.edustor.upload.model.EdustorUploadAccount
 
 
 @Repository
-interface AccountRepository : JpaRepository<EdustorUploadAccount, String>
+interface AccountRepository : MongoRepository<EdustorUploadAccount, String>
 
 fun AccountRepository.getForAccountId(id: String): EdustorUploadAccount {
     return this.findOne(id) ?: let {
