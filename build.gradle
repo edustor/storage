@@ -24,7 +24,6 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
-apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'spring-boot'
 
 group 'ru.edustor'
@@ -82,9 +81,4 @@ dependencies {
     compile "ru.edustor.commons:rabbit:$edustor_commons_version"
     compile "ru.edustor.commons:models:$edustor_commons_version"
     compile "ru.edustor.commons:version:$edustor_commons_version"
-
-
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M3"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M3"
-    testCompile "org.mockito:mockito-core:2.+"
 }
