@@ -8,6 +8,7 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+      - run: git submodule sync && git submodule update --init
       - restore_cache:
           key: edustor-upload-gradle-{{ checksum "build.gradle" }}
       - run: |
@@ -46,6 +47,7 @@ jobs:
       SWARM_CERT_URL: https://wutiarn.keybase.pub/swarm/cert.pem
     steps:
       - checkout
+      - run: git submodule sync && git submodule update --init
       - restore_cache:
           key: edustor-upload-{{ .Revision }}
       - setup_remote_docker
