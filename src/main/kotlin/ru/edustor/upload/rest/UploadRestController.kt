@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import ru.edustor.commons.auth.annotation.RequiresScope
+import ru.edustor.commons.auth.annotation.RequiresAuth
 import ru.edustor.commons.auth.assertScopeContains
 import ru.edustor.commons.auth.model.EdustorAuthProfile
 import ru.edustor.commons.models.upload.UploadResult
@@ -21,7 +21,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
     val httpClient: OkHttpClient = OkHttpClient()
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    @RequiresScope("upload")
+    @RequiresAuth("upload")
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
                         @RequestParam("target_lesson", required = false) targetLessonId: String?,
                         authProfile: EdustorAuthProfile): UploadResult? {
@@ -36,7 +36,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
     }
 
     @RequestMapping("pages/url", method = arrayOf(RequestMethod.POST))
-    @RequiresScope("upload | internal")
+    @RequiresAuth("upload | internal")
     fun handleUrlPdfUpload(@RequestParam url: String,
                            @RequestParam("target", required = false) targetLessonId: String?,
                            @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
