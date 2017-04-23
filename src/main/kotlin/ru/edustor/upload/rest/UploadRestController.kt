@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import ru.edustor.commons.auth.annotation.RequiresScope
 import ru.edustor.commons.auth.assertScopeContains
-import ru.edustor.commons.models.internal.accounts.EdustorAccount
+import ru.edustor.commons.auth.model.EdustorAuthProfile
 import ru.edustor.commons.models.upload.UploadResult
 import ru.edustor.upload.exception.InvalidContentTypeException
 import ru.edustor.upload.exception.MaxFileSizeViolationException
@@ -20,31 +21,32 @@ class UploadRestController(val uploadService: PagesUploadService) {
     val httpClient: OkHttpClient = OkHttpClient()
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
+    @RequiresScope("upload")
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
                         @RequestParam("target_lesson", required = false) targetLessonId: String?,
-                        account: EdustorAccount): UploadResult? {
+                        authProfile: EdustorAuthProfile): UploadResult? {
 
-        account.assertScopeContains("upload")
 
         if (file.contentType != "application/pdf") {
             throw InvalidContentTypeException("This url is accepts only application/pdf documents")
         }
 
-        val result = uploadService.processFile(account.uuid, file.inputStream, file.size, targetLessonId)
+        val result = uploadService.processFile(authProfile.accountId, file.inputStream, file.size, targetLessonId)
         return result
     }
 
     @RequestMapping("pages/url", method = arrayOf(RequestMethod.POST))
+    @RequiresScope("upload | internal")
     fun handleUrlPdfUpload(@RequestParam url: String,
                            @RequestParam("target", required = false) targetLessonId: String?,
                            @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
-                           account: EdustorAccount): UploadResult {
+                           authProfile: EdustorAuthProfile): UploadResult {
         val uploaderId = if (requestedUploaderId != null) {
-            account.assertScopeContains("internal")
+            authProfile.assertScopeContains("internal")
             requestedUploaderId
         } else {
-            account.assertScopeContains("upload")
-            account.uuid
+            authProfile.assertScopeContains("upload")
+            authProfile.accountId
         }
 
         val req = Request.Builder().url(url).build()
