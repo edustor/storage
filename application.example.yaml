@@ -1,7 +1,0 @@
-server:
-  port: 8083
-edustor:
-  storage:
-    url: https://s3.example.com
-    access-key:
-    secret-key:
