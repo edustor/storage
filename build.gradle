@@ -27,7 +27,6 @@ version '0.9-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
 }
 
 configurations {
