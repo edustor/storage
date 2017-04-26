@@ -28,7 +28,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
 
 
         if (file.contentType != "application/pdf") {
-            throw InvalidContentTypeException("This url is accepts only application/pdf documents")
+            throw InvalidContentTypeException("This url accepts only application/pdf documents")
         }
 
         val result = uploadService.processFile(authProfile.accountId, file.inputStream, file.size, targetLessonId)
