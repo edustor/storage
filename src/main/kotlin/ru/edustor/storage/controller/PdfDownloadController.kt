@@ -1,4 +1,4 @@
-package ru.edustor.upload.controller
+package ru.edustor.storage.controller
 
 import com.itextpdf.text.pdf.PdfCopy
 import com.itextpdf.text.pdf.PdfReader
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 import ru.edustor.commons.api.CoreApi
 import ru.edustor.commons.exceptions.http.DataFetchFailedException
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
-import ru.edustor.upload.exception.NoPagesFoundException
-import ru.edustor.upload.exception.PageNotFoundException
+import ru.edustor.storage.exception.NoPagesFoundException
+import ru.edustor.storage.exception.PageNotFoundException
 import java.io.ByteArrayOutputStream
 
 @RestController

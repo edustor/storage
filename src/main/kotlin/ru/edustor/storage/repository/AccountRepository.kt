@@ -1,8 +1,8 @@
-package ru.edustor.upload.repository
+package ru.edustor.storage.repository
 
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
-import ru.edustor.upload.model.EdustorUploadAccount
+import ru.edustor.storage.model.EdustorUploadAccount
 
 
 @Repository

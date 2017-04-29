@@ -1,4 +1,4 @@
-package ru.edustor.upload.service
+package ru.edustor.storage.service
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import ru.edustor.commons.models.internal.processing.pdf.PdfUploadedEvent
 import ru.edustor.commons.models.upload.UploadResult
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
-import ru.edustor.upload.repository.AccountRepository
+import ru.edustor.storage.repository.AccountRepository
 import java.io.InputStream
 import java.time.Instant
 import java.util.*

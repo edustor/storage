@@ -1,4 +1,4 @@
-package ru.edustor.upload.model
+package ru.edustor.storage.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

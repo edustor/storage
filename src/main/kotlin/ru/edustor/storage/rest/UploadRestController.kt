@@ -1,4 +1,4 @@
-package ru.edustor.upload.rest
+package ru.edustor.storage.rest
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -11,17 +11,17 @@ import ru.edustor.commons.auth.annotation.RequiresAuth
 import ru.edustor.commons.auth.assertScopeContains
 import ru.edustor.commons.auth.model.EdustorAuthProfile
 import ru.edustor.commons.models.upload.UploadResult
-import ru.edustor.upload.exception.InvalidContentTypeException
-import ru.edustor.upload.exception.MaxFileSizeViolationException
-import ru.edustor.upload.service.PagesUploadService
+import ru.edustor.storage.exception.InvalidContentTypeException
+import ru.edustor.storage.exception.MaxFileSizeViolationException
+import ru.edustor.storage.service.PagesUploadService
 
 @RestController
-@RequestMapping("api/v1/upload")
+@RequestMapping("api/v1/storage")
 class UploadRestController(val uploadService: PagesUploadService) {
     val httpClient: OkHttpClient = OkHttpClient()
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    @RequiresAuth("upload")
+    @RequiresAuth("storage")
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
                         @RequestParam("target_lesson", required = false) targetLessonId: String?,
                         authProfile: EdustorAuthProfile): UploadResult? {
@@ -36,7 +36,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
     }
 
     @RequestMapping("pages/url", method = arrayOf(RequestMethod.POST))
-    @RequiresAuth("upload | internal")
+    @RequiresAuth("storage | internal")
     fun handleUrlPdfUpload(@RequestParam url: String,
                            @RequestParam("target", required = false) targetLessonId: String?,
                            @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
@@ -45,7 +45,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
             authProfile.assertScopeContains("internal")
             requestedUploaderId
         } else {
-            authProfile.assertScopeContains("upload")
+            authProfile.assertScopeContains("storage")
             authProfile.accountId
         }
 

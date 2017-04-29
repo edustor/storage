@@ -1,4 +1,4 @@
-rootProject.name = 'upload'
+rootProject.name = 'storage'
 include ':edustor-commons:version'
 include ':edustor-commons:storage'
 include ':edustor-commons:auth'

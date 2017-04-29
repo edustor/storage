@@ -5,9 +5,9 @@ ADD . /code/src
 
 RUN cd src && ./gradlew build
 
-RUN mv ./src/build/dist/edustor-upload.jar .
+RUN mv ./src/build/dist/edustor-storage.jar .
 
 RUN rm -rf src /root/.gradle
 
 HEALTHCHECK CMD curl -f http://localhost:8080/version
-CMD java -jar edustor-upload.jar
+CMD java -jar edustor-storage.jar

@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/edustor-upload
+    working_directory: ~/edustor-storage
     docker:
       - image: openjdk:8-jdk
     environment:
@@ -10,21 +10,21 @@ jobs:
       - checkout
       - run: git submodule sync && git submodule update --init
       - restore_cache:
-          key: edustor-upload-gradle-{{ checksum "build.gradle" }}
+          key: edustor-storage-gradle-{{ checksum "build.gradle" }}
       - run: |
           ./gradlew build
           rm build/dist/*.original
       - save_cache:
-          key: edustor-upload-gradle-{{ checksum "build.gradle" }}
+          key: edustor-storage-gradle-{{ checksum "build.gradle" }}
           paths:
             - ~/.gradle
       - save_cache:
-          key: edustor-upload-{{ .Revision }}
+          key: edustor-storage-{{ .Revision }}
           paths:
-            - ~/edustor-upload/build/dist
+            - ~/edustor-storage/build/dist
       - store_artifacts:
-          path: ~/edustor-upload/build/dist
-          destination: edustor-upload
+          path: ~/edustor-storage/build/dist
+          destination: edustor-storage
       - run:
           name: Trigger deploy
           command: |
@@ -37,19 +37,19 @@ jobs:
     branches:
       only:
         - master
-    working_directory: ~/edustor-upload
+    working_directory: ~/edustor-storage
     docker:
       - image: docker:git
     environment:
       TERM: dumb
-      IMAGE_NAME: quay.io/edustor/upload
+      IMAGE_NAME: quay.io/edustor/storage
       SWARM_CA_URL: https://wutiarn.keybase.pub/swarm/ca.pem
       SWARM_CERT_URL: https://wutiarn.keybase.pub/swarm/cert.pem
     steps:
       - checkout
       - run: git submodule sync && git submodule update --init
       - restore_cache:
-          key: edustor-upload-{{ .Revision }}
+          key: edustor-storage-{{ .Revision }}
       - setup_remote_docker
       - run:
           name: Build docker image
@@ -73,4 +73,4 @@ jobs:
             export DOCKER_TLS_VERIFY=1
             docker --tlsverify --tlscacert /root/.docker/ca.pem \
               --tlscert /root/.docker/cert.pem --tlskey /root/.docker/key.pem \
-              service update --with-registry-auth --image $IMAGE_NAME:ci-$CIRCLE_BUILD_NUM sw0_edustor-upload
+              service update --with-registry-auth --image $IMAGE_NAME:ci-$CIRCLE_BUILD_NUM sw0_edustor-storage

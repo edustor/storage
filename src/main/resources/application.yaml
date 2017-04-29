@@ -5,4 +5,4 @@ spring:
       max-request-size: 100Mb
   data:
     mongodb:
-      database: edustor-upload
+      database: edustor-storage
