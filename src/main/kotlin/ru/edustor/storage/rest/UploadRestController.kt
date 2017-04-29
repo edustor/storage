@@ -16,7 +16,7 @@ import ru.edustor.storage.exception.MaxFileSizeViolationException
 import ru.edustor.storage.service.PagesUploadService
 
 @RestController
-@RequestMapping("api/v1/storage")
+@RequestMapping("api/v1/upload")
 class UploadRestController(val uploadService: PagesUploadService) {
     val httpClient: OkHttpClient = OkHttpClient()
 
