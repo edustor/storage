@@ -21,7 +21,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
     val httpClient: OkHttpClient = OkHttpClient()
 
     @RequestMapping("pages", method = arrayOf(RequestMethod.POST))
-    @RequiresAuth("storage")
+    @RequiresAuth("upload")
     fun handlePdfUpload(@RequestParam("file") file: MultipartFile,
                         @RequestParam("target_lesson", required = false) targetLessonId: String?,
                         authProfile: EdustorAuthProfile): UploadResult? {
@@ -36,7 +36,7 @@ class UploadRestController(val uploadService: PagesUploadService) {
     }
 
     @RequestMapping("pages/url", method = arrayOf(RequestMethod.POST))
-    @RequiresAuth("storage | internal")
+    @RequiresAuth("upload | internal")
     fun handleUrlPdfUpload(@RequestParam url: String,
                            @RequestParam("target", required = false) targetLessonId: String?,
                            @RequestParam("uploader_id", required = false) requestedUploaderId: String?, // For internal usage
