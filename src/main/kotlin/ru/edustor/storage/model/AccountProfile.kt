@@ -7,10 +7,10 @@ import javax.persistence.Table
 @Entity
 @Table(name = "account_profiles")
 class AccountProfile() {
-    @Id lateinit var id: String
+    @Id lateinit var accountId: String
     var nextUploadTarget: String? = null
 
-    constructor(id: String) : this() {
-        this.id = id
+    constructor(accountId: String) : this() {
+        this.accountId = accountId
     }
 }
