@@ -1,16 +1,16 @@
 package ru.edustor.storage.repository
 
-import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import ru.edustor.storage.model.EdustorUploadAccount
+import ru.edustor.storage.model.EdustorStorageAccount
 
 
 @Repository
-interface AccountRepository : MongoRepository<EdustorUploadAccount, String>
+interface AccountRepository : JpaRepository<EdustorStorageAccount, String>
 
-fun AccountRepository.getForAccountId(id: String): EdustorUploadAccount {
+fun AccountRepository.getForAccountId(id: String): EdustorStorageAccount {
     return this.findOne(id) ?: let {
-        val a = EdustorUploadAccount(id)
+        val a = EdustorStorageAccount(id)
         this.save(a)
         return@let a
     }

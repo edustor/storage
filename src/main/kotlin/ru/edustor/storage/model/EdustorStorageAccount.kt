@@ -1,10 +1,10 @@
 package ru.edustor.storage.model
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import javax.persistence.Entity
+import javax.persistence.Id
 
-@Document
-class EdustorUploadAccount() {
+@Entity
+class EdustorStorageAccount() {
     @Id lateinit var id: String
     var nextUploadTarget: String? = null
 

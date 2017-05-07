@@ -64,12 +64,13 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.itextpdf:itextpdf:5.5.8'
+    compile 'org.postgresql:postgresql:42.1.1'
 
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-amqp"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
     compile project(':edustor-commons:version')
     compile project(':edustor-commons:storage')
