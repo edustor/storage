@@ -2,15 +2,15 @@ package ru.edustor.storage.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import ru.edustor.storage.model.EdustorStorageAccount
+import ru.edustor.storage.model.AccountProfile
 
 
 @Repository
-interface AccountRepository : JpaRepository<EdustorStorageAccount, String>
+interface AccountProfileRepository : JpaRepository<AccountProfile, String>
 
-fun AccountRepository.getForAccountId(id: String): EdustorStorageAccount {
+fun AccountProfileRepository.getForAccountId(id: String): AccountProfile {
     return this.findOne(id) ?: let {
-        val a = EdustorStorageAccount(id)
+        val a = AccountProfile(id)
         this.save(a)
         return@let a
     }

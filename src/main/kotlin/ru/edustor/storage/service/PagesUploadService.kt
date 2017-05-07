@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import ru.edustor.commons.models.internal.processing.pdf.PdfUploadedEvent
 import ru.edustor.commons.models.upload.UploadResult
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
-import ru.edustor.storage.repository.AccountRepository
+import ru.edustor.storage.repository.AccountProfileRepository
 import java.io.InputStream
 import java.time.Instant
 import java.util.*
@@ -15,7 +15,7 @@ import java.util.*
 @Service
 class PagesUploadService(val storage: BinaryObjectStorageService,
                          val rabbitTemplate: RabbitTemplate,
-                         val accountRepository: AccountRepository) {
+                         val accountProfileRepository: AccountProfileRepository) {
     val logger: Logger = LoggerFactory.getLogger(PagesUploadService::class.java)
 
     fun processFile(uploaderId: String, file: InputStream, fileSize: Long, requestedTarget: String? = null): UploadResult {
@@ -24,10 +24,10 @@ class PagesUploadService(val storage: BinaryObjectStorageService,
         logger.info("Processing file $uploadUuid uploaded by $uploaderId")
 
         val targetLessonId = requestedTarget ?: let {
-            val account = accountRepository.findOne(uploaderId)
+            val account = accountProfileRepository.findOne(uploaderId)
             val nuTarget = account?.nextUploadTarget ?: return@let null
             account.nextUploadTarget = null
-            accountRepository.save(account)
+            accountProfileRepository.save(account)
             logger.info("Using target lesson from database: $nuTarget")
             return@let nuTarget
         }
