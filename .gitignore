@@ -3,4 +3,4 @@
 build/
 out/
 classes/
-/application.yaml
+/application.properties
