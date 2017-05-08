@@ -10,7 +10,7 @@ interface AccountProfileRepository : JpaRepository<AccountProfile, String>
 
 fun AccountProfileRepository.getForAccountId(id: String): AccountProfile {
     return this.findOne(id) ?: let {
-        val a = AccountProfile(id)
+        val a = AccountProfile(accountId = id)
         this.save(a)
         return@let a
     }
