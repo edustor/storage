@@ -32,7 +32,7 @@ class PagesUploadService(val storage: BinaryObjectStorageService,
             return@let nuTarget
         }
 
-        storage.put(BinaryObjectStorageService.ObjectType.PDF_UPLOAD, uploadUuid, file, fileSize)
+        storage.put(uploaderId, BinaryObjectStorageService.ObjectType.PDF_UPLOAD, uploadUuid, file, fileSize)
         logger.info("PDF $uploadUuid uploaded by $uploaderId")
 
         val uploadedEvent = PdfUploadedEvent(uploadUuid, uploaderId, Instant.now(), targetLessonId)

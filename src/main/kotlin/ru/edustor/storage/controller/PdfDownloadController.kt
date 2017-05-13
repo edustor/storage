@@ -29,7 +29,8 @@ class PdfDownloadController(val coreApi: CoreApi, val storage: BinaryObjectStora
             throw DataFetchFailedException("Failed to get files list: Core returned ${resp.errorBody()}")
         }
 
-        val fileIds = resp.body()
+        val pageFilesResponse = resp.body()
+        val fileIds = pageFilesResponse.pages
         if (fileIds.isEmpty()) {
             throw NoPagesFoundException()
         }
@@ -41,7 +42,8 @@ class PdfDownloadController(val coreApi: CoreApi, val storage: BinaryObjectStora
         document.addTitle(lessonId)
 
         fileIds.forEach {
-            val pageStream = (storage.get(BinaryObjectStorageService.ObjectType.PAGE, it)
+//            TODO: Get lesson's owner id from core
+            val pageStream = (storage.get(pageFilesResponse.ownerId, BinaryObjectStorageService.ObjectType.PAGE, it)
                     ?: throw PageNotFoundException("Cannot find page file: $it"))
             val pdfReader = PdfReader(pageStream)
             copy.addDocument(pdfReader)
