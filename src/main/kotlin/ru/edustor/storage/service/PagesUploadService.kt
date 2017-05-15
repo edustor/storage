@@ -4,8 +4,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Service
-import ru.edustor.commons.models.internal.processing.pdf.PdfUploadedEvent
-import ru.edustor.commons.models.upload.UploadResult
+import ru.edustor.commons.models.rabbit.processing.pages.PdfUploadedEvent
+import ru.edustor.commons.models.rest.storage.UploadResult
 import ru.edustor.commons.storage.service.BinaryObjectStorageService
 import ru.edustor.storage.repository.AccountProfileRepository
 import java.io.InputStream
