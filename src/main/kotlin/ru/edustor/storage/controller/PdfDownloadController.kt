@@ -20,12 +20,12 @@ class PdfDownloadController(val storage: BinaryObjectStorageService) {
     @ResponseBody
     @RequestMapping("/pdf/{documentId}")
     fun getPdf(@PathVariable documentId: String): ResponseEntity<InputStreamResource> {
-        val gridFsFile = storage.findGridFsFile(ASSEMBLED_DOCUMENT, documentId)
-        val lessonInputStream = gridFsFile?.inputStream ?: throw DocumentNotFoundException()
+        val lessonInputStream = storage.get(ASSEMBLED_DOCUMENT, documentId) ?: throw DocumentNotFoundException()
+        val objStat = storage.stat(ASSEMBLED_DOCUMENT, documentId)
         val inputStreamResource = InputStreamResource(lessonInputStream)
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_PDF
-        headers.contentLength = gridFsFile.length
+        headers.contentLength = objStat.length
 
         logger.info("Accessing assembled document PDF: $documentId")
 
